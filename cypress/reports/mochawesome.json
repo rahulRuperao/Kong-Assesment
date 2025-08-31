@@ -1,0 +1,143 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 3,
+    "passes": 3,
+    "pending": 0,
+    "failures": 0,
+    "start": "2025-08-30T14:42:37.006Z",
+    "end": "2025-08-30T14:42:48.602Z",
+    "duration": 11596,
+    "testsRegistered": 3,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "fce736c9-c5df-4ba9-9a2b-f5e197261d43",
+      "title": "",
+      "fullFile": "cypress\\e2e\\kong-service.cy.js",
+      "file": "cypress\\e2e\\kong-service.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "9ff0ac09-cb31-471b-9669-11fa52a06020",
+          "title": "Kong Manager - Service & Route Creation",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should load Kong Manager UI successfully",
+              "fullTitle": "Kong Manager - Service & Route Creation should load Kong Manager UI successfully",
+              "timedOut": null,
+              "duration": 1935,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// Wait for and verify the visibility of workspace overview title\ncy.get(\"div.workspace-overview-title\", {\n  timeout: 10000\n}).should(\"contain.text\", \"Workspaces\") // Check for text \"Workspaces\"\n.and(\"be.visible\"); // Ensure the element is visible",
+              "err": {},
+              "uuid": "66502a02-e460-4015-b08c-acd2e5304bb1",
+              "parentUUID": "9ff0ac09-cb31-471b-9669-11fa52a06020",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should create a new Service",
+              "fullTitle": "Kong Manager - Service & Route Creation should create a new Service",
+              "timedOut": null,
+              "duration": 3134,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// Navigate to the \"Service\" section\ncy.get('[role=\"link\"]', {\n  timeout: 10000\n}).should(\"be.visible\") // Ensure link is visible\n.click(); // Click on the Service link\n// Open the action button to create a new service\ncy.get('[data-testid=\"action-button\"]', {\n  timeout: 10000\n}).should(\"be.visible\").click(); // Click on the action button to create a service\n// Fill in the form for creating a new service\ncy.get('[data-testid=\"gateway-service-name-input\"]', {\n  timeout: 10000\n}).type(\"Test.Service\");\ncy.get('[data-testid=\"gateway-service-tags-input\"]', {\n  timeout: 10000\n}).type(\"tags123\");\ncy.get('[data-testid=\"gateway-service-url-input\"]', {\n  timeout: 10000\n}).clear().type(\"http://example.com\");\n// Submit the service form\ncy.get('[data-testid=\"service-form-submit\"]', {\n  timeout: 10000\n}).click();\n// Verify the error alert message for missing database configuration\ncy.get('[data-testid=\"form-error\"]') // Target the error message based on data-testid attribute\n.should('contain', \"cannot create 'services' entities when not using a database\"); // Ensure the error message is as expected",
+              "err": {},
+              "uuid": "70e99cff-73a0-4622-bb08-d629b5cab132",
+              "parentUUID": "9ff0ac09-cb31-471b-9669-11fa52a06020",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should create a Route for the Service",
+              "fullTitle": "Kong Manager - Service & Route Creation should create a Route for the Service",
+              "timedOut": null,
+              "duration": 6165,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// Navigate to the \"Service\" section\ncy.get('[role=\"link\"]', {\n  timeout: 10000\n}).should(\"be.visible\").click();\n// Click on the action button to add a route\ncy.get('[data-testid=\"action-button\"]', {\n  timeout: 10000\n}).click();\n// Open the main sidebar menu (e.g., for mobile view)\ncy.get('a[aria-label=\"Open Main Menu\"]').scrollIntoView().should('be.visible').click({\n  force: true\n}); // Force click to ensure interaction even if element is not in view\n// Wait for the sidebar to expand\ncy.wait(1000); // Optional wait to ensure menu is fully loaded\n// Click on \"Routes\" in the sidebar\ncy.get('li.sidebar-item-secondary').contains('Routes') // Targeting the Routes link inside the sidebar\n.scrollIntoView().should('be.visible').click({\n  force: true\n}); // Force click if the element is not fully visible\n// Click on \"Add Route\" button in the toolbar\ncy.get('[data-testid=\"toolbar-add-route\"]', {\n  timeout: 10000\n}).scrollIntoView().should('be.visible').click({\n  force: true\n});\n// Fill in the Route creation form\ncy.get('[data-testid=\"route-form-name\"]', {\n  timeout: 10000\n}).type(\"Test.Route\");\ncy.get('[data-testid=\"route-form-service-id\"]', {\n  timeout: 10000\n}).click(); // Open the service dropdown\ncy.wait(1000); // Optional wait for dropdown to load\ncy.get('div.route-form-service-dropdown-item', {\n  timeout: 10000\n}).click(); // Select service from dropdown\ncy.get('[data-testid=\"route-form-tags\"]', {\n  timeout: 10000\n}).type(\"route-tags123\");\ncy.get('[data-testid=\"route-form-paths-input-1\"]', {\n  timeout: 10000\n}).type(\"/testpath\");\ncy.wait(1000); // Optional wait for form processing (e.g., for validation)\n// Submit the Route form\ncy.get('[data-testid=\"route-form-submit\"]', {\n  timeout: 10000\n}).click();\n// Verify the error alert message for missing database configuration for Route creation\ncy.get('[data-testid=\"form-error\"]') // Target the error message based on data-testid attribute\n.should('contain', \"cannot create 'routes' entities when not using a database\"); // Ensure the error message is as expected",
+              "err": {},
+              "uuid": "683b2312-2367-476b-8548-0feba617ee67",
+              "parentUUID": "9ff0ac09-cb31-471b-9669-11fa52a06020",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "66502a02-e460-4015-b08c-acd2e5304bb1",
+            "70e99cff-73a0-4622-bb08-d629b5cab132",
+            "683b2312-2367-476b-8548-0feba617ee67"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 11234,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": true,
+        "html": true,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}
