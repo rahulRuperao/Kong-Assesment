@@ -1,12 +1,11 @@
-{
-  "name": "kong-cypress-tests",
+"name": "kong-cypress-tests",
   "version": "1.0.0",
   "description": "Cypress automation tests for Kong Gateway UI and proxy",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env CYPRESS_CACHE_FOLDER=$HOME/.cache/Cypress cypress run",
-    "cypress:open": "cross-env CYPRESS_CACHE_FOLDER=$HOME/.cache/Cypress cypress open",
-    "cypress:run:headed": "cross-env CYPRESS_CACHE_FOLDER=$HOME/.cache/Cypress cypress run --headed --browser chrome",
+    "test": "set CYPRESS_CACHE_FOLDER=C:\\CypressCache&& cypress run",
+    "cypress:open": "set CYPRESS_CACHE_FOLDER=C:\\CypressCache&& cypress open",
+    "cypress:run:headed": "set CYPRESS_CACHE_FOLDER=C:\\CypressCache&& cypress run --headed --browser chrome",
     "generate-report": "node generate-report.js"
   },
   "keywords": [
@@ -21,8 +20,7 @@
     "cypress": "^15.0.0",
     "mochawesome": "^7.1.3",
     "mochawesome-merge": "^4.4.1",
-    "mochawesome-report-generator": "^6.2.0",
-    "cross-env": "^7.0.3"
+    "mochawesome-report-generator": "^6.2.0"
   },
   "dependencies": {
     "glob": "^11.0.3"
