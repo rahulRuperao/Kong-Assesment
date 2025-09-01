@@ -23,25 +23,7 @@ jobs:
           --health-cmd="pg_isready -U kong"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=5
-
-      kong:
-        image: kong/kong-gateway:3.8
-        env:
-          KONG_DATABASE: postgres
-          KONG_PG_HOST: postgres
-          KONG_PG_USER: kong
-          KONG_PG_PASSWORD: kong
-          KONG_PG_DATABASE: kong
-          KONG_PROXY_ACCESS_LOG: /dev/stdout
-          KONG_ADMIN_ACCESS_LOG: /dev/stdout
-          KONG_PROXY_ERROR_LOG: /dev/stderr
-          KONG_ADMIN_ERROR_LOG: /dev/stderr
-          KONG_ADMIN_LISTEN: 0.0.0.0:8001,0.0.0.0:8002
-        ports:
-          - 8000:8000
-          - 8001:8001
-          - 8002:8002
+          --health-retries=10
 
     steps:
       - name: Checkout code
@@ -64,14 +46,30 @@ jobs:
 
       - name: Bootstrap Kong database
         run: |
-          docker run --rm \
-            --network host \
+          docker run --rm --network host \
             -e KONG_DATABASE=postgres \
             -e KONG_PG_HOST=localhost \
             -e KONG_PG_USER=kong \
             -e KONG_PG_PASSWORD=kong \
             -e KONG_PG_DATABASE=kong \
             kong/kong-gateway:3.8 kong migrations bootstrap
+
+      - name: Start Kong
+        run: |
+          docker run -d --name kong \
+            --network host \
+            -e KONG_DATABASE=postgres \
+            -e KONG_PG_HOST=localhost \
+            -e KONG_PG_USER=kong \
+            -e KONG_PG_PASSWORD=kong \
+            -e KONG_PG_DATABASE=kong \
+            -e KONG_PROXY_ACCESS_LOG=/dev/stdout \
+            -e KONG_ADMIN_ACCESS_LOG=/dev/stdout \
+            -e KONG_PROXY_ERROR_LOG=/dev/stderr \
+            -e KONG_ADMIN_ERROR_LOG=/dev/stderr \
+            -e KONG_ADMIN_LISTEN=0.0.0.0:8001,0.0.0.0:8002 \
+            -p 8000:8000 -p 8001:8001 -p 8002:8002 \
+            kong/kong-gateway:3.8
 
       - name: Wait for Kong to be ready
         run: |
